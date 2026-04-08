@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+:root {
+  --brand-green: #1c7b5e;
+}
+
+h1 {
+  color: var(--brand-green);
+}
