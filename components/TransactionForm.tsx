@@ -20,7 +20,7 @@ const categories = [
   "Cash",
 ];
 
-const TransactionForm = () => {
+const TransactionForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   // Access message/notification context from Ant Design's App wrapper
   const { message } = App.useApp();
   const [form] = Form.useForm();
@@ -32,105 +32,92 @@ const TransactionForm = () => {
       const response = await fetch("/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          // Ensure date is formatted as a string for the API/Database
-          date: values.date.toISOString(),
-        }),
+        body: JSON.stringify({ ...values, date: values.date.toISOString() }),
       });
 
       if (response.ok) {
-        message.success("Transaction recorded successfully!");
+        message.success("Recorded successfully!");
         form.resetFields();
-      } else {
-        const errorData = await response.json();
-        message.error(errorData.error || "Failed to save transaction");
+        if (onSuccess) onSuccess(); // Trigger the close and refresh
       }
     } catch (error) {
-      console.error("Submit Error:", error);
-      message.error("Server connection failed. Please check if the DB is running.");
+      message.error("Failed to save.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card
-      title="Add New Transaction"
-      variant="outlined"
-      style={{ maxWidth: 600, margin: "20px auto", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}
+    <Form
+      form={form}
+      layout="vertical"
+      initialValues={{ type: "payment", date: dayjs() }}
+      onFinish={onFinish}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={{ type: "payment", date: dayjs() }}
-        onFinish={onFinish}
-      >
-        {/* Transaction Type Selector */}
-        <Form.Item name="type" label="Transaction Type" rules={[{ required: true }]}>
-          <Radio.Group block optionType="button" buttonStyle="solid">
-            <Radio.Button value="payment">
-              <SendOutlined /> Payment
-            </Radio.Button>
-            <Radio.Button value="receipt">
-              <WalletOutlined /> Receipt
-            </Radio.Button>
-            <Radio.Button value="contra">
-              <SwapOutlined /> Contra
-            </Radio.Button>
-          </Radio.Group>
+      {/* Transaction Type Selector */}
+      <Form.Item name="type" label="Transaction Type" rules={[{ required: true }]}>
+        <Radio.Group block optionType="button" buttonStyle="solid">
+          <Radio.Button value="payment">
+            <SendOutlined /> Payment
+          </Radio.Button>
+          <Radio.Button value="receipt">
+            <WalletOutlined /> Receipt
+          </Radio.Button>
+          <Radio.Button value="contra">
+            <SwapOutlined /> Contra
+          </Radio.Button>
+        </Radio.Group>
+      </Form.Item>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+        {/* Amount in Rupees */}
+        <Form.Item
+          name="amount"
+          label="Amount (₹)"
+          rules={[{ required: true, message: "Please enter amount" }]}
+        >
+          <InputNumber
+            prefix="₹"
+            style={{ width: "100%" }}
+            placeholder="0.00"
+            precision={2}
+            min={0.01}
+          />
         </Form.Item>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-          {/* Amount in Rupees */}
-          <Form.Item
-            name="amount"
-            label="Amount (₹)"
-            rules={[{ required: true, message: "Please enter amount" }]}
-          >
-            <InputNumber
-              prefix="₹"
-              style={{ width: "100%" }}
-              placeholder="0.00"
-              precision={2}
-              min={0.01}
-            />
-          </Form.Item>
-
-          {/* Category Dropdown */}
-          <Form.Item
-            name="category"
-            label="Category"
-            rules={[{ required: true, message: "Select a category" }]}
-          >
-            <Select placeholder="Select category" showSearch>
-              {categories.map((cat) => (
-                <Select.Option key={cat} value={cat.toLowerCase()}>
-                  {cat}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-
-        {/* Date of Transaction */}
-        <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-          <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+        {/* Category Dropdown */}
+        <Form.Item
+          name="category"
+          label="Category"
+          rules={[{ required: true, message: "Select a category" }]}
+        >
+          <Select placeholder="Select category" showSearch>
+            {categories.map((cat) => (
+              <Select.Option key={cat} value={cat.toLowerCase()}>
+                {cat}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
+      </div>
 
-        {/* Description / Memo */}
-        <Form.Item name="description" label="Description">
-          <TextArea rows={3} placeholder="What was this for? (e.g. Monthly Broadband bill)" />
-        </Form.Item>
+      {/* Date of Transaction */}
+      <Form.Item name="date" label="Date" rules={[{ required: true }]}>
+        <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+      </Form.Item>
 
-        {/* Action Button */}
-        <Form.Item style={{ marginBottom: 0 }}>
-          <Button type="primary" htmlType="submit" block loading={loading} size="large">
-            Save Transaction
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
+      {/* Description / Memo */}
+      <Form.Item name="description" label="Description">
+        <TextArea rows={3} placeholder="What was this for? (e.g. Monthly Broadband bill)" />
+      </Form.Item>
+
+      {/* Action Button */}
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Button type="primary" htmlType="submit" block loading={loading} size="large">
+          Save Transaction
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
