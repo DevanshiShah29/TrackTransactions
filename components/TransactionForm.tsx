@@ -1,27 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
-import { Form, Input, InputNumber, Select, DatePicker, Radio, Button, Card, App } from "antd";
+import { useState } from "react";
+import { Form, Input, InputNumber, Select, DatePicker, Radio, Button, App } from "antd";
 import { WalletOutlined, SwapOutlined, SendOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { createTransaction } from "@/lib/api";
+import { categories } from "@/lib/constants";
 
 const { TextArea } = Input;
 
-// Phase 1 Categories
-const categories = [
-  "Food",
-  "Clothes",
-  "Online Subscription",
-  "Recharge",
-  "Donation",
-  "Interest",
-  "Salary",
-  "Profit",
-  "Cash",
-];
-
 const TransactionForm = ({ onSuccess }: { onSuccess?: () => void }) => {
-  // Access message/notification context from Ant Design's App wrapper
   const { message } = App.useApp();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -29,17 +17,10 @@ const TransactionForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, date: values.date.toISOString() }),
-      });
-
-      if (response.ok) {
-        message.success("Recorded successfully!");
-        form.resetFields();
-        if (onSuccess) onSuccess(); // Trigger the close and refresh
-      }
+      await createTransaction({ ...values, date: values.date.toISOString() });
+      message.success("Recorded successfully!");
+      form.resetFields();
+      if (onSuccess) onSuccess();
     } catch (error) {
       message.error("Failed to save.");
     } finally {
