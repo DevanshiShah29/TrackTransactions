@@ -76,7 +76,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
         onFilter: (value, record) => record.type === value,
         render: (type: string) => (
           <Tag
-            color={type === "receipt" ? "green" : type === "payment" ? "volcano" : "blue"}
+            color={type === "receipt" ? "#3c9d6f" : type === "payment" ? "#b7443e" : "blue"}
             style={{ fontWeight: 600, borderRadius: "4px" }}
           >
             {type.toUpperCase()}
@@ -140,8 +140,14 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       loading={loading}
       rowKey="id"
       pagination={{
-        pageSize: 8,
+        defaultPageSize: 10,
         showSizeChanger: true,
+        pageSizeOptions: ["10", "20", "50", "100"],
+        showTotal: (total, range) => (
+          <span style={{ fontSize: "14px", color: "rgba(0,0,0,0.45)" }}>
+            Showing {range[0]}-{range[1]} of {total} records
+          </span>
+        ),
         position: ["bottomRight"],
       }}
       className="premium-table"

@@ -26,7 +26,7 @@ const AmountCell: React.FC<{ amount: number; type: string }> = ({ amount, type }
   return (
     <Space size="small">
       <Text strong style={{ color: config.color, fontSize: "15px" }}>
-        {config.prefix} ₹{amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+        ₹{amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
       </Text>
       <IconComponent style={{ color: config.color }} />
     </Space>

@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 
 // Library imports
-import { Card, Divider, Modal, App, Typography, Layout } from "antd";
-import useTransactions from "@/hooks/useTransactions";
+import { Card, Divider, Modal, App, Typography, Layout, Row, Col, Flex } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 
 // Component imports
 import TransactionsContainer from "./TransactionsContainer";
 import TransactionForm from "./TransactionForm";
+import BalanceCard from "./BalanceCard";
+import MonthlyBudgetTile from "./MonthlyBudget";
+import useTransactions from "@/hooks/useTransactions";
+import MonthlyStatsTile from "./MonthlyStatsTile";
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 const { Content } = Layout;
 
 /**
@@ -22,6 +26,15 @@ const TransactionsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<any | null>(null);
   const { message } = App.useApp();
+
+  const budget = 10000;
+  const spentThisMonth = useMemo(() => {
+    return data
+      .filter((t) => t.type === "payment" && new Date(t.date).getMonth() === new Date().getMonth())
+      .reduce((sum, t) => sum + t.amount, 0);
+  }, [data]);
+
+  const budgetPercent = Math.min(Math.round((spentThisMonth / budget) * 100), 100);
 
   // Memoizing handlers to prevent unnecessary re-renders of the container
   const handleOpenAdd = useCallback(() => {
@@ -54,6 +67,26 @@ const TransactionsPage: React.FC = () => {
   return (
     <Content className="page-wrapper">
       <main style={{ width: "100%" }}>
+        <Row gutter={[12, 12]} align="stretch">
+          <Col xs={24} xl={8}>
+            <BalanceCard transactions={data} />
+          </Col>
+          <Col xs={24} xl={8}>
+            <MonthlyBudgetTile
+              budget={budget}
+              spentThisMonth={spentThisMonth}
+              budgetPercent={budgetPercent}
+              onEditBudget={() => message.info("Budget editing coming soon!")}
+            />
+          </Col>
+          <Col xs={24} xl={8}>
+            <MonthlyStatsTile
+              savingsRate={Math.max(0, 100 - budgetPercent)}
+              transactionCount={data.length}
+              topCategory="Groceries"
+            />
+          </Col>
+        </Row>
         <Card className="ledger-card" role="article">
           {/* Semantic Header Section for SEO */}
           <header className="ledger-header">
