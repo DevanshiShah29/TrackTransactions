@@ -41,7 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onOpenAdd, onSearch, defaultValue
   };
 
   return (
-    <nav aria-label="Transaction controls" style={{ marginBottom: 24 }}>
+    <nav aria-label="Transaction controls">
       <Flex
         gap="middle"
         align="center"

@@ -32,3 +32,77 @@ body {
 h1 {
   color: var(--brand-green);
 }
+
+.search-bar-container {
+  margin-bottom: 24px;
+}
+.search-input-wrapper {
+  flex: 1;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 576px) {
+  .search-bar-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .add-transaction-btn {
+    width: 100%;
+  }
+}
+
+.transactions-manager {
+  width: 100%;
+}
+.table-responsive-wrapper {
+  width: 100%;
+  /* Browser compatibility for mobile horizontal scroll */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-wrapper {
+  padding: 30px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.ledger-card {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+.ledger-header {
+  margin-bottom: 24px;
+}
+.brand-title {
+  color: #1c7b5e !important;
+  margin-bottom: 4px !important;
+}
+.brand-subtitle {
+  margin-bottom: 0 !important;
+}
+.modal-divider {
+  margin: 12px 0 24px 0 !important;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 576px) {
+  .page-wrapper {
+    padding: 16px;
+  }
+  .ledger-card {
+    border-radius: 8px !important;
+  }
+}

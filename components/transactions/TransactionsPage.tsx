@@ -1,78 +1,102 @@
 "use client";
 
-import React, { useState } from "react";
-import { Card, Divider, Modal, App } from "antd";
-import TransactionsTable from "./TransactionsTable";
-import SearchBar from "./SearchBar";
-import TransactionModal from "./TransactionModal";
-import useTransactions from "@/hooks/useTransactions";
-import TransactionsContainer from "./TransactionsContainer";
+import React, { useState, useCallback } from "react";
 
+// Library imports
+import { Card, Divider, Modal, App, Typography, Layout } from "antd";
+import useTransactions from "@/hooks/useTransactions";
+
+// Component imports
+import TransactionsContainer from "./TransactionsContainer";
+import TransactionForm from "./TransactionForm";
+
+const { Title, Paragraph } = Typography;
+const { Content } = Layout;
+
+/**
+ * TransactionsPage serves as the primary view for the Transaction Ledger.
+ * It manages the modal state for creating/editing and orchestrates data refreshing.
+ */
 const TransactionsPage: React.FC = () => {
   const { data, loading, refresh, remove } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<any | null>(null);
   const { message } = App.useApp();
 
+  // Memoizing handlers to prevent unnecessary re-renders of the container
+  const handleOpenAdd = useCallback(() => {
+    setEditingTransaction(null);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleOpenEdit = useCallback((t: any) => {
+    setEditingTransaction(t);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setEditingTransaction(null);
+  }, []);
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await remove(id);
+        message.success("Transaction deleted successfully");
+      } catch {
+        message.error("Failed to delete transaction. Please try again.");
+      }
+    },
+    [remove, message],
+  );
+
   return (
-    <div style={{ padding: "30px", background: "#f8f9fa", minHeight: "100vh" }}>
-      <Card
-        bordered={false}
-        style={{ borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 24,
-          }}
-        >
-          <div>
-            <h3 style={{ margin: 0, color: "#1c7b5e" }}>Transaction Ledger</h3>
-            <div style={{ color: "rgba(0,0,0,0.45)" }}>
-              Manage your financial records efficiently
-            </div>
-          </div>
-        </div>
+    <Content className="page-wrapper">
+      <main style={{ width: "100%" }}>
+        <Card className="ledger-card" role="article">
+          {/* Semantic Header Section for SEO */}
+          <header className="ledger-header">
+            <Title level={2} id="ledger-title" className="brand-title">
+              Transaction Ledger
+            </Title>
+            <Paragraph type="secondary" className="brand-subtitle">
+              Track and manage your financial records with ease.
+            </Paragraph>
+          </header>
 
-        <TransactionsContainer
-          transactions={data}
-          onDelete={async (id) => {
-            try {
-              await remove(id);
-              message.success("Deleted successfully");
-            } catch {
-              message.error("Delete failed");
-            }
-          }}
-          onOpenAdd={() => setIsModalOpen(true)}
-        />
-      </Card>
-
+          <TransactionsContainer
+            transactions={data}
+            loading={loading}
+            onDelete={handleDelete}
+            onOpenAdd={handleOpenAdd}
+            onEdit={handleOpenEdit}
+          />
+        </Card>
+      </main>
       <Modal
-        title="Add New Transaction"
+        title={
+          <Title level={4} style={{ margin: 0 }}>
+            {editingTransaction ? "Edit Transaction" : "Add New Transaction"}
+          </Title>
+        }
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={handleCloseModal}
         footer={null}
         width={600}
+        centered
+        aria-labelledby="modal-title"
       >
-        <Divider style={{ margin: "12px 0 24px 0" }} />
-        <TransactionModal
+        <Divider className="modal-divider" />
+        <TransactionForm
+          initialData={editingTransaction}
           onSuccess={() => {
-            setIsModalOpen(false);
+            handleCloseModal();
             refresh();
           }}
         />
       </Modal>
-
-      <style jsx global>{`
-        .premium-table .ant-table-thead > tr > th {
-          background: #f0f2f5 !important;
-          color: #1c7b5e !important;
-          font-weight: 700;
-        }
-      `}</style>
-    </div>
+    </Content>
   );
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   CoffeeOutlined,
   ShoppingOutlined,
@@ -39,4 +38,11 @@ export const categories = [
   "Salary",
   "Profit",
   "Cash",
+  "Gift",
+  "Groceries",
+  "Entertainment",
+  "Health",
+  "Education",
+  "Transport",
+  "Other",
 ];

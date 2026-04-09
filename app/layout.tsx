@@ -10,7 +10,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: "#1c7b5e",
+                colorPrimary: "#1c7b5e", // Brand Green
+                borderRadius: 8,
+                controlHeight: 40, // Larger touch target for mobile
               },
             }}
           >
