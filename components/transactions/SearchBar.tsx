@@ -1,78 +1,85 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from "react";
-import { Input, Button } from "antd";
+
+// Library imports
+import { Input, Button, Flex, Grid } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 
-type Props = {
+type SearchBarProps = {
   onOpenAdd: () => void;
   onSearch?: (query: string) => void;
   defaultValue?: string;
 };
 
-const SearchBar: React.FC<Props> = ({ onOpenAdd, onSearch, defaultValue = "" }) => {
+const { useBreakpoint } = Grid;
+
+const SearchBar: React.FC<SearchBarProps> = ({ onOpenAdd, onSearch, defaultValue = "" }) => {
   const [query, setQuery] = useState<string>(defaultValue);
-  // use ReturnType<typeof setTimeout> so typing works across environments
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const DEBOUNCE_MS = 300;
+  const screens = useBreakpoint(); // This detects screen size (xs, sm, md, etc.)
 
-  // keep internal query in sync when parent changes defaultValue
+  // Logic: stack vertically if screen size is 'xs' (mobile)
+  const isMobile = screens.xs;
+
   useEffect(() => {
     setQuery(defaultValue);
   }, [defaultValue]);
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
-
-  const scheduleSearch = (value: string) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      onSearch?.(value);
-      timerRef.current = null;
-    }, DEBOUNCE_MS);
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setQuery(v);
-    scheduleSearch(v);
-  };
-
-  const handlePressEnter = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-    onSearch?.(query);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => onSearch?.(v), DEBOUNCE_MS);
   };
 
   return (
-    <div
-      style={{ display: "flex", width: "100%", gap: 12, alignItems: "center", marginBottom: 24 }}
-    >
-      <Input
-        placeholder="Search history..."
-        prefix={<SearchOutlined />}
-        allowClear
-        value={query}
-        onChange={handleChange}
-        onPressEnter={handlePressEnter}
-        style={{ flex: 1, minWidth: 0, borderRadius: 8, padding: "8px 12px" }}
-      />
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={onOpenAdd}
-        style={{ width: 150, borderRadius: 8, background: "#1c7b5e", padding: "19px 12px" }}
+    <nav aria-label="Transaction controls" style={{ marginBottom: 24 }}>
+      <Flex
+        gap="middle"
+        align="center"
+        className="search-bar-container"
+        justify="space-between"
+        vertical={isMobile}
       >
-        Add Transaction
-      </Button>
-    </div>
+        {/* Input Wrapper - Flex: 1 makes it take available space */}
+        <div className="search-input-wrapper">
+          <label htmlFor="transaction-search" className="visually-hidden">
+            Search Transactions
+          </label>
+          <Input
+            id="transaction-search"
+            placeholder="Search by description or category..."
+            prefix={<SearchOutlined aria-hidden="true" />}
+            allowClear
+            size="medium"
+            value={query}
+            onChange={handleChange}
+            onPressEnter={() => onSearch?.(query)}
+            aria-label="Search transactions"
+          />
+        </div>
+
+        <Button
+          type="primary"
+          icon={<PlusOutlined aria-hidden="true" />}
+          onClick={onOpenAdd}
+          size="medium"
+          aria-label="Add new transaction"
+          className="add-transaction-btn"
+          block={isMobile}
+        >
+          Add Transaction
+        </Button>
+      </Flex>
+    </nav>
   );
 };
 
