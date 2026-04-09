@@ -1,26 +1,34 @@
+"use client";
+
 import React from "react";
+
+// Library imports
 import { Space, Typography } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined, SwapOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
+// Store the Component reference, not the JSX tag
+const TRANSACTION_CONFIG = {
+  receipt: { color: "#2cb273", Icon: ArrowUpOutlined, prefix: "+" },
+  payment: { color: "#dd4861", Icon: ArrowDownOutlined, prefix: "-" },
+  contra: { color: "#096dd9", Icon: SwapOutlined, prefix: "" },
+} as const;
+
+type TransactionType = keyof typeof TRANSACTION_CONFIG;
+
 const AmountCell: React.FC<{ amount: number; type: string }> = ({ amount, type }) => {
-  const isReceipt = type === "receipt";
-  const isPayment = type === "payment";
-  const color = isReceipt ? "#2cb273" : isPayment ? "#dd4861" : "#096dd9";
+  const config = TRANSACTION_CONFIG[type as TransactionType] || TRANSACTION_CONFIG.contra;
+
+  // Extract the Component to a capitalized variable
+  const IconComponent = config.Icon;
 
   return (
-    <Space>
-      <Text strong style={{ color }}>
-        ₹{amount.toLocaleString("en-IN")}
+    <Space size="small">
+      <Text strong style={{ color: config.color, fontSize: "15px" }}>
+        {config.prefix} ₹{amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
       </Text>
-      {isReceipt ? (
-        <ArrowUpOutlined style={{ color: "#2cb273" }} />
-      ) : isPayment ? (
-        <ArrowDownOutlined style={{ color: "#dd4861" }} />
-      ) : (
-        <SwapOutlined style={{ color: "#1890ff" }} />
-      )}
+      <IconComponent style={{ color: config.color }} />
     </Space>
   );
 };
