@@ -331,6 +331,14 @@ h1 {
   color: #1c7b5e !important;
 }
 
+.purple-tint {
+  background: #f9f0ff;
+  border-color: #efdbff;
+}
+.purple-tint .mini-value {
+  color: #722ed1 !important;
+}
+
 .transaction-box {
   background: #e6f4ff;
   border-color: #bae0ff;
@@ -339,12 +347,12 @@ h1 {
   color: #0958d9 !important;
 }
 
-.spending-box {
-  background: #fff1f0;
-  border-color: #ffccc7;
+.orange-tint {
+  background: #fff7e6;
+  border-color: #ffe7ba;
 }
-.spending-box .mini-value {
-  color: #cf1322 !important;
+.orange-tint .mini-value {
+  color: #d48806 !important;
 }
 
 @media (hover: hover) {

@@ -80,11 +80,7 @@ const TransactionsPage: React.FC = () => {
             />
           </Col>
           <Col xs={24} xl={8}>
-            <MonthlyStatsTile
-              savingsRate={Math.max(0, 100 - budgetPercent)}
-              transactionCount={data.length}
-              topCategory="Groceries"
-            />
+            <MonthlyStatsTile transactions={data} />
           </Col>
         </Row>
         <Card className="ledger-card" role="article">
