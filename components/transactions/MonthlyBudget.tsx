@@ -58,57 +58,6 @@ const MonthlyBudgetTile: React.FC<{
           </Text>
         </div>
       </Flex>
-
-      <style jsx global>{`
-        /* Logic for Stats Tiles */
-        .stats-tile {
-          border-radius: 20px !important;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
-          flex: 1;
-          overflow: hidden;
-        }
-
-        .tile-header {
-          margin-bottom: 16px;
-        }
-
-        .tile-label {
-          font-size: 11px;
-          letter-spacing: 1.2px;
-          text-transform: uppercase;
-        }
-
-        .edit-icon {
-          color: #1c7b5e;
-          font-size: 16px;
-        }
-
-        /* Progress Circle Styling */
-        .progress-text {
-          line-height: 1.2;
-        }
-
-        .percent-val {
-          font-size: 16px;
-          font-weight: 700;
-          color: #1f1f1f;
-        }
-
-        .sub-text {
-          font-size: 12px;
-          color: #8c8c8c;
-          text-transform: uppercase;
-        }
-
-        .budget-summary {
-          text-align: center;
-          margin-top: 4px;
-        }
-
-        .budget-limit-text {
-          font-size: 14px;
-        }
-      `}</style>
     </Card>
   );
 };

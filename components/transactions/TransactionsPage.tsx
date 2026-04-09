@@ -67,7 +67,7 @@ const TransactionsPage: React.FC = () => {
   return (
     <Content className="page-wrapper">
       <main style={{ width: "100%" }}>
-        <Row gutter={[12, 12]} align="stretch">
+        <Row gutter={[16, 16]} align="stretch">
           <Col xs={24} xl={8}>
             <BalanceCard transactions={data} />
           </Col>
@@ -90,7 +90,7 @@ const TransactionsPage: React.FC = () => {
         <Card className="ledger-card" role="article">
           {/* Semantic Header Section for SEO */}
           <header className="ledger-header">
-            <Title level={2} id="ledger-title" className="brand-title">
+            <Title level={3} id="ledger-title" className="brand-title">
               Transaction Ledger
             </Title>
             <Paragraph type="secondary" className="brand-subtitle">
