@@ -3,6 +3,7 @@
 import React, { useMemo } from "react";
 import { Card, Typography, Flex, Space, Divider } from "antd";
 import { Transaction } from "@/types";
+import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 
@@ -12,21 +13,28 @@ interface BalanceCardProps {
 
 const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
   const totals = useMemo(() => {
-    return transactions.reduce(
-      (acc, t) => {
-        if (t.type === "receipt") acc.income += t.amount;
-        if (t.type === "payment") acc.expense += t.amount;
-        return acc;
-      },
-      { income: 0, expense: 0 },
-    );
+    const currentMonth = dayjs().month();
+    const currentYear = dayjs().year();
+
+    return transactions
+      .filter((t) => {
+        const transDate = dayjs(t.date);
+        return transDate.month() === currentMonth && transDate.year() === currentYear;
+      })
+      .reduce(
+        (acc, t) => {
+          if (t.type === "receipt") acc.income += t.amount;
+          if (t.type === "payment") acc.expense += t.amount;
+          return acc;
+        },
+        { income: 0, expense: 0 },
+      );
   }, [transactions]);
 
-  const balance = totals.income - totals.expense;
+  const monthlyBalance = totals.income - totals.expense;
 
   return (
     <Card bordered={false} className="premium-balance-card">
-      {/* Background Decorative Elements */}
       <div className="card-glass-overlay" />
       <div className="card-glow" />
 
@@ -34,20 +42,20 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
         {/* Top Section */}
         <Flex justify="space-between" align="start">
           <Space direction="vertical" size={0}>
-            <Text className="label-text">TOTAL BALANCE</Text>
+            <Text className="label-text">{dayjs().format("MMMM")} BALANCE</Text>
             <Title level={1} className="balance-amount">
-              ₹{balance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              ₹{monthlyBalance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </Title>
           </Space>
-          <div className="contactless-icon">
+          <div className="contactless-icon" aria-hidden="true">
             <div className="wave" />
             <div className="wave" />
             <div className="wave" />
           </div>
         </Flex>
 
-        {/* Middle Section - Masked Number */}
-        <div className="card-number">
+        {/* Middle Section - Card Number */}
+        <div className="card-number" aria-label="Card number ending in 2110">
           <span>****</span>
           <span>****</span>
           <span>****</span>
@@ -62,7 +70,11 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
           </Space>
 
           <Flex className="stats-box" gap="large">
-            <div className="stat-item">
+            <div
+              className="stat-item"
+              role="status"
+              aria-label={`Monthly Income: ₹${totals.income}`}
+            >
               <Text className="stat-label">INCOME</Text>
               <Text className="stat-value income">+₹{totals.income.toLocaleString("en-IN")}</Text>
             </div>
@@ -70,7 +82,11 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
               type="vertical"
               style={{ height: "30px", borderColor: "rgba(255,255,255,0.2)" }}
             />
-            <div className="stat-item">
+            <div
+              className="stat-item"
+              role="status"
+              aria-label={`Monthly Expenses: ₹${totals.expense}`}
+            >
               <Text className="stat-label">EXPENSES</Text>
               <Text className="stat-value expense">-₹{totals.expense.toLocaleString("en-IN")}</Text>
             </div>
