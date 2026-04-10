@@ -106,32 +106,6 @@ const MonthlyBudgetTile: React.FC<MonthlyBudgetTileProps> = ({
         <Divider style={{ margin: "12px 0 24px 0" }} />
         <BudgetForm onSuccess={handleFormSuccess} initialData={categoryTargets} />
       </Modal>
-
-      <style jsx global>{`
-        .budget-tile {
-          display: flex;
-          flex-direction: column;
-        }
-        .progress-text {
-          line-height: 1.2;
-        }
-        .percent-val {
-          font-size: 20px;
-          font-weight: 700;
-        }
-        .sub-text {
-          font-size: 12px;
-          color: #8c8c8c;
-          text-transform: uppercase;
-        }
-        .budget-summary {
-          text-align: center;
-        }
-        .edit-icon {
-          color: #1c7b5e;
-          font-size: 16px;
-        }
-      `}</style>
     </Card>
   );
 };

@@ -291,7 +291,7 @@ h1 {
 }
 
 .stats-header {
-  margin-bottom: 10px !important;
+  margin-bottom: 5px !important;
 }
 
 .download-icon {
@@ -400,4 +400,15 @@ h1 {
   display: flex;
   flex-direction: column;
   padding: 15px 20px 20px !important;
+}
+
+/* BUDGET FORM */
+.budget-settings-form .ant-input-number {
+  border-radius: 10px !important;
+}
+.budget-footer {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
 }

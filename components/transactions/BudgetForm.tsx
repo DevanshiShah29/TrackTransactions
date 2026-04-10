@@ -86,23 +86,10 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onSuccess, initialData, loading
           icon={<SaveOutlined />}
           loading={loading}
           size="large"
-          style={{ height: 48, borderRadius: 12, padding: "0 32px" }}
         >
           Save Budget
         </Button>
       </Flex>
-
-      <style jsx global>{`
-        .budget-settings-form .ant-input-number {
-          border-radius: 10px !important;
-        }
-        .budget-footer {
-          background: #f8f9fa;
-          padding: 20px;
-          border-radius: 16px;
-          border: 1px solid #f0f0f0;
-        }
-      `}</style>
     </Form>
   );
 };
