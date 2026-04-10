@@ -1,41 +1,77 @@
 "use client";
 
-import React from "react";
-import { Card, Typography, Flex, Progress, Button, Tooltip } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
 
-const { Text } = Typography;
+// Library imports
+import { Card, Typography, Flex, Progress, Button, Tooltip, Modal, Divider } from "antd";
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 
-/**
- * MonthlyBudgetTile: Displays spending progress against a set limit.
- * Includes an accessible button for budget adjustments.
- */
-const MonthlyBudgetTile: React.FC<{
+// Component imports
+import BudgetForm from "./BudgetForm";
+
+const { Text, Title } = Typography;
+
+interface MonthlyBudgetTileProps {
   budgetPercent: number;
   spentThisMonth: number;
   budget: number;
-  onEditBudget: () => void;
-}> = ({ budgetPercent, spentThisMonth, budget, onEditBudget }) => {
+  onUpdateBudget: (values: any) => Promise<void> | void;
+  categoryTargets?: Record<string, number>;
+}
+
+/**
+ * MonthlyBudgetTile: Displays spending progress.
+ * Manages its own Modal state for budget adjustments.
+ */
+const MonthlyBudgetTile: React.FC<MonthlyBudgetTileProps> = ({
+  budgetPercent,
+  spentThisMonth,
+  budget,
+  onUpdateBudget,
+  categoryTargets = {},
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpen = () => setIsModalOpen(true);
+  const handleClose = () => setIsModalOpen(false);
+
+  const handleFormSuccess = async (values: any) => {
+    await onUpdateBudget(values);
+    handleClose();
+  };
+
+  const isBudgetSet = budget > 0;
+
   return (
     <Card className="stats-tile budget-tile" role="region" aria-label="Monthly budget overview">
-      {/* Header with Title and Action Button */}
       <Flex justify="space-between" align="center" className="tile-header">
         <Text type="secondary" strong className="tile-label">
           MONTHLY BUDGET
         </Text>
-        <Tooltip title="Edit Monthly Budget">
+        <Tooltip title={isBudgetSet ? "Edit Budget" : "Add Budget"}>
           <Button
             type="text"
-            size="small"
-            icon={<EditOutlined className="edit-icon" />}
-            onClick={onEditBudget}
-            aria-label="Edit monthly budget"
+            size="medium"
+            icon={
+              isBudgetSet ? (
+                <EditOutlined className="edit-icon" />
+              ) : (
+                <PlusOutlined className="edit-icon" />
+              )
+            }
+            onClick={handleOpen}
+            aria-label={isBudgetSet ? "Edit monthly budget" : "Add monthly budget"}
           />
         </Tooltip>
       </Flex>
 
-      {/* Progress Content */}
-      <Flex vertical align="center" gap="middle" className="tile-body">
+      <Flex
+        vertical
+        align="center"
+        gap="middle"
+        className="tile-body"
+        style={{ flex: 1, justifyContent: "center" }}
+      >
         <Progress
           type="circle"
           percent={budgetPercent}
@@ -58,6 +94,44 @@ const MonthlyBudgetTile: React.FC<{
           </Text>
         </div>
       </Flex>
+
+      <Modal
+        title={<Title level={4}>Set Monthly Budget - April 2026</Title>}
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        width={600}
+        centered
+      >
+        <Divider style={{ margin: "12px 0 24px 0" }} />
+        <BudgetForm onSuccess={handleFormSuccess} initialData={categoryTargets} />
+      </Modal>
+
+      <style jsx global>{`
+        .budget-tile {
+          display: flex;
+          flex-direction: column;
+        }
+        .progress-text {
+          line-height: 1.2;
+        }
+        .percent-val {
+          font-size: 20px;
+          font-weight: 700;
+        }
+        .sub-text {
+          font-size: 12px;
+          color: #8c8c8c;
+          text-transform: uppercase;
+        }
+        .budget-summary {
+          text-align: center;
+        }
+        .edit-icon {
+          color: #1c7b5e;
+          font-size: 16px;
+        }
+      `}</style>
     </Card>
   );
 };

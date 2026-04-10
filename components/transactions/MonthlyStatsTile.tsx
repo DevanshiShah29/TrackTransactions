@@ -84,7 +84,7 @@ const MonthlyStatsTile: React.FC<MonthlyStatsTileProps> = ({ transactions, onDow
             icon={<DownloadOutlined className="download-icon" />}
             onClick={handleDownload}
             aria-label="Download monthly financial report"
-            size="small"
+            size="medium"
           />
         </Tooltip>
       </Flex>

@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 
 // Library imports
-import { Card, Divider, Modal, App, Typography, Layout, Row, Col, Flex } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { Card, Divider, Modal, App, Typography, Layout, Row, Col } from "antd";
 
 // Component imports
 import TransactionsContainer from "./TransactionsContainer";
@@ -14,7 +13,7 @@ import MonthlyBudgetTile from "./MonthlyBudget";
 import useTransactions from "@/hooks/useTransactions";
 import MonthlyStatsTile from "./MonthlyStatsTile";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const { Content } = Layout;
 
 /**
@@ -26,6 +25,7 @@ const TransactionsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<any | null>(null);
   const { message } = App.useApp();
+  const [monthlyBudgetData, setMonthlyBudgetData] = useState({ total: 0, targets: {} });
 
   const budget = 10000;
   const spentThisMonth = useMemo(() => {
@@ -64,6 +64,44 @@ const TransactionsPage: React.FC = () => {
     [remove, message],
   );
 
+  useEffect(() => {
+    fetchBudget();
+  }, []);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      fetchBudget();
+    }
+  }, [data.length]);
+
+  // Fetch budget on mount/refresh
+  const fetchBudget = async () => {
+    const now = new Date();
+    const res = await fetch(`/api/budget?month=${now.getMonth()}&year=${now.getFullYear()}`);
+    const data = await res.json();
+    setMonthlyBudgetData({ total: data.total, targets: data.categoryTargets });
+  };
+
+  const handleUpdateBudget = async (values: any) => {
+    const now = new Date();
+    const total = Object.values(values).reduce((a: any, b: any) => a + (b || 0), 0);
+
+    const res = await fetch("/api/budget", {
+      method: "POST",
+      body: JSON.stringify({
+        month: now.getMonth(),
+        year: now.getFullYear(),
+        total,
+        categoryTargets: values,
+      }),
+    });
+
+    if (res.ok) {
+      message.success("Budget Saved!");
+      fetchBudget();
+    }
+  };
+
   return (
     <Content className="page-wrapper">
       <main style={{ width: "100%" }}>
@@ -73,10 +111,15 @@ const TransactionsPage: React.FC = () => {
           </Col>
           <Col xs={24} xl={8}>
             <MonthlyBudgetTile
-              budget={budget}
+              budget={monthlyBudgetData.total}
               spentThisMonth={spentThisMonth}
-              budgetPercent={budgetPercent}
-              onEditBudget={() => message.info("Budget editing coming soon!")}
+              budgetPercent={
+                monthlyBudgetData.total > 0
+                  ? Math.round((spentThisMonth / monthlyBudgetData.total) * 100)
+                  : 0
+              }
+              onUpdateBudget={handleUpdateBudget}
+              categoryTargets={monthlyBudgetData.targets}
             />
           </Col>
           <Col xs={24} xl={8}>
