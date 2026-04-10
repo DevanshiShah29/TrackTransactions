@@ -1,18 +1,19 @@
 "use client";
 
 import React, { useMemo } from "react";
+
+// Library imports
 import { Card, Typography, Flex, Row, Col, Button, Tooltip, App } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import { Transaction } from "@/types";
-import { capitalize } from "@/utils/format";
 import dayjs from "dayjs";
 
-const { Text, Title } = Typography;
+// Helper functions
+import { capitalize } from "@/utils/format";
 
-interface MonthlyStatsTileProps {
-  transactions: Transaction[];
-  onDownload?: () => void;
-}
+// Types
+import { MonthlyStatsTileProps } from "@/types";
+
+const { Text, Title } = Typography;
 
 const MonthlyStatsTile: React.FC<MonthlyStatsTileProps> = ({ transactions, onDownload }) => {
   const { message } = App.useApp();

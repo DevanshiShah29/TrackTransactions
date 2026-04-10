@@ -1,0 +1,57 @@
+/* MONTHLY BUDGET STATS TILES */
+.stats-tile {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tile-header {
+  margin-bottom: 16px;
+}
+
+.tile-label {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.edit-icon {
+  color: #1c7b5e !important;
+  font-size: 18px;
+}
+
+.progress-text {
+  line-height: 1.2;
+}
+
+.percent-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.sub-text {
+  font-size: 14px;
+  color: #8c8c8c;
+  text-transform: uppercase;
+}
+
+.budget-summary {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.budget-limit-text {
+  font-size: 14px;
+}
+
+/* BUDGET FORM */
+.budget-settings-form .ant-input-number {
+  border-radius: 10px !important;
+}
+.budget-footer {
+  background: #f8f9fa;
+  padding: 20px !important;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+}

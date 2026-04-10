@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useMemo } from "react";
+
+// Library imports
 import { Card, Typography, Flex, Space, Divider } from "antd";
-import { Transaction } from "@/types";
 import dayjs from "dayjs";
 
-const { Title, Text } = Typography;
+// Types
+import { BalanceCardProps } from "@/types";
 
-interface BalanceCardProps {
-  transactions: Transaction[];
-}
+const { Title, Text } = Typography;
 
 const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
   const totals = useMemo(() => {

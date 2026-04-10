@@ -6,11 +6,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Input, Button, Flex, Grid } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 
-type SearchBarProps = {
-  onOpenAdd: () => void;
-  onSearch?: (query: string) => void;
-  defaultValue?: string;
-};
+// Types
+import { SearchBarProps } from "../../types";
 
 const { useBreakpoint } = Grid;
 
@@ -20,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onOpenAdd, onSearch, defaultValue
   const DEBOUNCE_MS = 300;
   const screens = useBreakpoint(); // This detects screen size (xs, sm, md, etc.)
 
-  // Logic: stack vertically if screen size is 'xs' (mobile)
+  // Stack vertically if screen size is 'xs' (mobile)
   const isMobile = screens.xs;
 
   useEffect(() => {

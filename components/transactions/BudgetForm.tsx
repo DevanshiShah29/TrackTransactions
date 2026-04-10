@@ -5,15 +5,12 @@ import React, { useEffect } from "react";
 // Library imports
 import { Form, InputNumber, Button, Row, Col, Typography, Divider, Flex } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
+
+// Types and constants
 import { categories } from "@/lib/constants";
+import { BudgetFormProps } from "@/types";
 
 const { Text, Title } = Typography;
-
-interface BudgetFormProps {
-  onSuccess: (values: any) => void;
-  initialData?: Record<string, number> | null;
-  loading?: boolean;
-}
 
 /**
  * BudgetForm: Allows users to set optional monthly targets per category.

@@ -10,15 +10,7 @@ import SearchBar from "./SearchBar";
 import TransactionsTable from "./TransactionsTable";
 
 // Constants and types
-import { Transaction } from "@/types";
-
-interface TransactionsContainerProps {
-  transactions: Transaction[];
-  loading?: boolean;
-  onDelete: (id: string) => Promise<void>;
-  onEdit: (transaction: Transaction) => void;
-  onOpenAdd: () => void;
-}
+import { TransactionsContainerProps } from "@/types";
 
 /**
  * TransactionsContainer manages the filtering logic and layout
@@ -74,10 +66,8 @@ const TransactionsContainer: React.FC<TransactionsContainerProps> = ({
   return (
     <section aria-labelledby="ledger-title" className="transactions-manager">
       <Flex vertical gap="large">
-        {/* Search and Add */}
         <SearchBar onOpenAdd={onOpenAdd} onSearch={handleSearch} defaultValue={searchQuery} />
 
-        {/* Semantic Table Wrapper for SEO/Accessibility */}
         <div
           role="region"
           aria-live="polite"

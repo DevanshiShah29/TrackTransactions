@@ -9,15 +9,10 @@ import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 // Component imports
 import BudgetForm from "./BudgetForm";
 
-const { Text, Title } = Typography;
+// Types
+import { MonthlyBudgetTileProps } from "../../types";
 
-interface MonthlyBudgetTileProps {
-  budgetPercent: number;
-  spentThisMonth: number;
-  budget: number;
-  onUpdateBudget: (values: any) => Promise<void> | void;
-  categoryTargets?: Record<string, number>;
-}
+const { Text, Title } = Typography;
 
 /**
  * MonthlyBudgetTile: Displays spending progress.

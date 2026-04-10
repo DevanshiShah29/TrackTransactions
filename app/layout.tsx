@@ -1,6 +1,7 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider, App } from "antd"; // Added App
 import "./globals.css";
+import "../styles/_global.scss";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

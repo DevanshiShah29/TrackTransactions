@@ -10,13 +10,9 @@ import {
   WalletOutlined,
 } from "@ant-design/icons";
 
-interface CategoryInfo {
-  icon: any;
-  color: string;
-}
+import { CategoryAvatarProps } from "@/types";
 
-export const categoryMap: Record<string, CategoryInfo> = {
-  // Use <Icon /> (the element) instead of Icon (the value)
+export const categoryMap: Record<string, CategoryAvatarProps> = {
   food: { icon: <CoffeeOutlined />, color: "#ff9c6e" },
   clothes: { icon: <ShoppingOutlined />, color: "#ff85c0" },
   "online subscription": { icon: <GlobalOutlined />, color: "#597ef7" },

@@ -21,11 +21,11 @@ const { Content } = Layout;
  * It manages the modal state for creating/editing and orchestrates data refreshing.
  */
 const TransactionsPage: React.FC = () => {
-  const { data, loading, refresh, remove } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<any | null>(null);
-  const { message } = App.useApp();
   const [monthlyBudgetData, setMonthlyBudgetData] = useState({ total: 0, targets: {} });
+  const { data, loading, refresh, remove } = useTransactions();
+  const { message } = App.useApp();
 
   const budget = 10000;
   const spentThisMonth = useMemo(() => {
@@ -33,8 +33,6 @@ const TransactionsPage: React.FC = () => {
       .filter((t) => t.type === "payment" && new Date(t.date).getMonth() === new Date().getMonth())
       .reduce((sum, t) => sum + t.amount, 0);
   }, [data]);
-
-  const budgetPercent = Math.min(Math.round((spentThisMonth / budget) * 100), 100);
 
   // Memoizing handlers to prevent unnecessary re-renders of the container
   const handleOpenAdd = useCallback(() => {

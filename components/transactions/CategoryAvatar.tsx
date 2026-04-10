@@ -6,10 +6,8 @@ import React from "react";
 import { Avatar } from "antd";
 import { QuestionOutlined } from "@ant-design/icons";
 
-interface CategoryAvatarProps {
-  icon?: React.ReactNode;
-  color?: string;
-}
+// Types
+import { CategoryAvatarProps } from "../../types";
 
 const CategoryAvatar: React.FC<CategoryAvatarProps> = ({
   icon = <QuestionOutlined />,

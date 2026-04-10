@@ -1,0 +1,129 @@
+// styles/BalanceCard.module.scss
+@import "variables";
+.premium-balance-card {
+  width: 100%;
+  background: $primary !important;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(44, 178, 115, 0.3) 0%, transparent 50%),
+    linear-gradient(135deg, #1c7b5e 0%, #114d3b 100%) !important;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.card-content {
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  padding: 0 5px;
+}
+
+/* Soft satin sheen across the surface */
+.card-glass-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 40%);
+  pointer-events: none;
+}
+
+.card-glow {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  top: -80px;
+  right: -80px;
+  pointer-events: none;
+}
+
+.balance-amount {
+  color: #fff !important;
+  margin: 8px 0 0 0 !important;
+  letter-spacing: -0.5px;
+  font-weight: 700 !important;
+  font-family: "Inter", sans-serif;
+}
+
+.label-text {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.card-number {
+  display: flex;
+  gap: 18px;
+  font-family: "Courier New", Courier, monospace; /* Classic card number font */
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  margin: 20px 0;
+  letter-spacing: 2px;
+}
+
+.last-four {
+  color: #fff;
+  font-weight: 600;
+}
+
+.holder-name {
+  color: #fff !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stats-box {
+  padding-top: 15px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  display: block !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.stat-value.income {
+  color: #5ff9aaff !important;
+}
+.stat-value.expense {
+  color: #f57b7bff !important;
+}
+
+.wave {
+  border-right: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.premium-balance-card {
+  background: #1c7b5e !important;
+  background-image:
+    radial-gradient(circle at 100% 0%, rgba(44, 178, 115, 0.4) 0%, transparent 40%),
+    linear-gradient(145deg, #1c7b5e 0%, #114d3b 100%) !important;
+  color: white;
+}
+
+.card-glass-overlay {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 35%);
+}
+
+.balance-amount {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.label-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+}

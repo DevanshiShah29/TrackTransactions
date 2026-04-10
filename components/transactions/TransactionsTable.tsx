@@ -14,17 +14,10 @@ import CategoryAvatar from "./CategoryAvatar";
 import AmountCell from "./AmountCell";
 
 // Type imports
-import { Transaction } from "@/types";
+import { TransactionsTableProps, Transaction } from "@/types";
 import { categoryMap } from "@/lib/constants";
 
 const { Text } = Typography;
-
-interface TransactionsTableProps {
-  data: Transaction[];
-  loading: boolean;
-  onDelete: (id: string) => Promise<void>;
-  onEdit: (record: Transaction) => void;
-}
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   data,

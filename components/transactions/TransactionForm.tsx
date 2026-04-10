@@ -12,14 +12,9 @@ import { createTransaction, updateTransaction } from "@/lib/api";
 
 // Constants
 import { categories } from "@/lib/constants";
-import { Transaction } from "@/types";
+import { TransactionFormProps } from "@/types";
 
 const { TextArea } = Input;
-
-interface TransactionFormProps {
-  onSuccess?: () => void;
-  initialData?: Transaction | null;
-}
 
 const TransactionForm: React.FC<TransactionFormProps> = ({ onSuccess, initialData }) => {
   const { message } = App.useApp();
