@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Flex, Typography } from "antd";
-import styles from "@/styles/Analytics.module.scss";
 
 const { Text } = Typography;
 

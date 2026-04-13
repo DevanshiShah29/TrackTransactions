@@ -16,12 +16,12 @@ export const processDataForBar = (
     // Group by Day (1 to 31)
     const daysInMonth = referenceDate.daysInMonth();
     for (let i = 1; i <= daysInMonth; i++) {
-      const key = i.toString();
-      dataMap[key] = { label: `Day ${i}`, income: 0, expense: 0 };
+      const key = i.toString().padStart(2, "0");
+      dataMap[key] = { label: key, income: 0, expense: 0 };
     }
 
     transactions.forEach((t) => {
-      const day = dayjs(t.date).date().toString();
+      const day = dayjs(t.date).date().toString().padStart(2, "0");
       if (dataMap[day]) {
         if (t.type === "receipt") dataMap[day].income += t.amount;
         if (t.type === "payment") dataMap[day].expense += t.amount;

@@ -25,7 +25,7 @@ const DynamicAnalyticsContainer: React.FC<DynamicChartProps> = ({
   data,
   renderChart,
 }) => {
-  const [viewType, setViewType] = useState("this_year"); // all_time, this_year, this_month
+  const [viewType, setViewType] = useState("this_year");
   const [referenceDate, setReferenceDate] = useState(dayjs());
 
   // 1. Navigation Logic
@@ -105,11 +105,12 @@ const DynamicAnalyticsContainer: React.FC<DynamicChartProps> = ({
         </div>
       </Flex>
 
-      <Flex justify="center" style={{ marginBottom: 16 }}>
-        <Text className="rangeDisplay">{rangeLabel}</Text>
-      </Flex>
+      <div className="rangeContainer">
+        <Flex justify="center">
+          <Text className="rangeDisplay">{rangeLabel}</Text>
+        </Flex>
+      </div>
 
-      {/* Ensure the chart is inside .chartWrapper .chartContent so CSS height applies */}
       <div className="chartContent">{renderChart(filteredData, viewType, referenceDate)}</div>
     </section>
   );
