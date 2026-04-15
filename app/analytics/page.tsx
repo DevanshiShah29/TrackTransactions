@@ -1,6 +1,6 @@
 "use client";
 
-import { Row, Col } from "antd";
+import { Row, Col, Flex, Typography } from "antd";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -19,7 +19,9 @@ import { capitalize } from "@/utils/format"; // Ensure this helper exists
 import { processDataForBar } from "@/utils/analytics";
 import DynamicAnalyticsContainer from "./DynamicAnalyticsContainer";
 import useTransactions from "@/hooks/useTransactions";
-import ChartLegend from "./ChartLegend";
+import { formatYAxis } from "@/utils/analytics";
+
+const { Text } = Typography;
 
 const AnalyticsPage = () => {
   const { data } = useTransactions();
@@ -28,7 +30,7 @@ const AnalyticsPage = () => {
   // Helper for Capitalized Tooltips
   const formatTooltipValue = (value: any, name?: string | number | Symbol) => {
     const nameStr = name?.toString() || "";
-    return [`₹${value.toLocaleString("en-IN")}`, capitalize(nameStr)];
+    return [`₹${Number(value).toLocaleString("en-IN")}`, capitalize(nameStr)];
   };
 
   return (
@@ -43,26 +45,32 @@ const AnalyticsPage = () => {
             renderChart={(filtered, view, date) => (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={processDataForBar(filtered, view, date)}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#ddd" />
                   <XAxis
                     dataKey="label"
                     axisLine={false}
                     tickLine={false}
                     interval={view === "this_month" ? 4 : 0}
-                    tick={{ fontSize: 11, fill: "#9ca3af" }}
+                    tick={{ fontSize: 11, fill: "#888" }}
                   />
-                  <YAxis axisLine={false} tickLine={false} />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={formatYAxis}
+                    width={35}
+                    tick={{ fontSize: 11, fill: "#888" }}
+                  />
 
                   <Tooltip
                     formatter={formatTooltipValue}
                     contentStyle={{
-                      borderRadius: "12px",
+                      borderRadius: "8px",
                       border: "none",
                       boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
                     }}
                   />
-                  <Bar dataKey="income" fill="#1c7b5e" radius={[4, 4, 0, 0]} barSize={12} />
-                  <Bar dataKey="expense" fill="#ffa39e" radius={[4, 4, 0, 0]} barSize={12} />
+                  <Bar dataKey="income" fill="#2ebe82" radius={[4, 4, 0, 0]} barSize={12} />
+                  <Bar dataKey="expense" fill="#956afb" radius={[4, 4, 0, 0]} barSize={12} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -86,26 +94,40 @@ const AnalyticsPage = () => {
                   <AreaChart data={trend}>
                     <defs>
                       <linearGradient id="colorBal" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#1677ff" stopOpacity={0.2} />
-                        <stop offset="95%" stopColor="#1677ff" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#fea02c" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#fea02c" stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#ddd" />
                     <XAxis
                       dataKey="label"
                       axisLine={false}
                       tickLine={false}
                       interval={view === "this_month" ? 4 : 0}
-                      tick={{ fontSize: 11, fill: "#9ca3af" }}
+                      tick={{ fontSize: 11, fill: "#888" }}
                     />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip formatter={formatTooltipValue} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={formatYAxis}
+                      width={35}
+                      tick={{ fontSize: 11, fill: "#888" }}
+                    />
+                    <Tooltip
+                      formatter={formatTooltipValue}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        border: "none",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                      }}
+                    />
                     <Area
                       type="monotone"
                       dataKey="balance"
-                      stroke="#1677ff"
+                      stroke="#fea02c"
                       fill="url(#colorBal)"
                       strokeWidth={3}
+                      connectNulls
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -127,24 +149,177 @@ const AnalyticsPage = () => {
                   acc[t.category] = (acc[t.category] || 0) + t.amount;
                   return acc;
                 }, {});
-              const pieData = Object.entries(grouped).map(([name, value]) => ({ name, value }));
+
+              const pieData = Object.entries(grouped).map(([name, value]) => ({
+                name,
+                value: value as number,
+              }));
+
+              const PASTEL_COLORS = [
+                "#562dd7",
+                "#2eb479",
+                "#fea02a",
+                "#ff7875",
+                "#36cfc9",
+                "#956afb",
+                "#ff9c6e",
+                "#69b1ff",
+                "#1677ff",
+              ];
+
               return (
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      innerRadius={70}
-                      outerRadius={90}
-                      dataKey="value"
-                      paddingAngle={0} // No space between sections
-                    >
-                      {pieData.map((_, i) => (
-                        <Cell key={i} fill={["#1c7b5e", "#2cb273", "#87e8de", "#114d3b"][i % 4]} />
+                <Flex vertical style={{ height: "100%" }}>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        innerRadius={55}
+                        outerRadius={85}
+                        dataKey="value"
+                        paddingAngle={0}
+                        stroke="none"
+                      >
+                        {pieData.map((_, i) => (
+                          <Cell key={i} fill={PASTEL_COLORS[i % PASTEL_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={formatTooltipValue}
+                        contentStyle={{
+                          borderRadius: "8px",
+                          border: "none",
+                          boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+
+                  <div style={{ marginTop: "24px", padding: "0 8px" }}>
+                    <Row gutter={[16, 12]}>
+                      {pieData.map((item, idx) => (
+                        <Col span={8} key={idx}>
+                          <Flex vertical gap={2}>
+                            <Flex align="center" gap={6}>
+                              <div
+                                style={{
+                                  width: "8px",
+                                  height: "8px",
+                                  borderRadius: "50%",
+                                  backgroundColor: PASTEL_COLORS[idx % PASTEL_COLORS.length],
+                                  flexShrink: 0,
+                                }}
+                              />
+                              <Text
+                                ellipsis={{ tooltip: capitalize(item.name) }}
+                                style={{ fontSize: "12px", color: "#555", fontWeight: 500 }}
+                              >
+                                {capitalize(item.name)}
+                              </Text>
+                            </Flex>
+                            <Text style={{ fontSize: "11px", color: "#888", paddingLeft: "14px" }}>
+                              ₹{item.value.toLocaleString("en-IN")}
+                            </Text>
+                          </Flex>
+                        </Col>
                       ))}
-                    </Pie>
-                    <Tooltip formatter={formatTooltipValue} />
-                  </PieChart>
-                </ResponsiveContainer>
+                    </Row>
+                  </div>
+                </Flex>
+              );
+            }}
+          />
+        </Col>
+
+        {/* 5. Income Sources - Pie Chart */}
+        <Col xs={24} lg={12} xl={12}>
+          <DynamicAnalyticsContainer
+            title="Income Sources"
+            infoText="Breakdown of your revenue streams."
+            data={data}
+            renderChart={(filtered) => {
+              const income = filtered.filter((t) => t.type === "receipt");
+              const grouped = income.reduce((acc: any, t) => {
+                acc[t.category || "Other"] = (acc[t.category || "Other"] || 0) + t.amount;
+                return acc;
+              }, {});
+
+              const pieData = Object.entries(grouped).map(([name, value]) => ({
+                name,
+                value: value as number,
+              }));
+
+              // Consistency: Using the same pastel palette as Spending by Category
+              const PASTEL_COLORS = [
+                "#562dd7",
+                "#2eb479",
+                "#fea02a",
+                "#ff7875",
+                "#36cfc9",
+                "#956afb",
+              ];
+
+              return (
+                <Flex vertical style={{ height: "100%" }}>
+                  {/* Thick Donut Pie Chart */}
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        innerRadius={55} // Golden thickness (30px width)
+                        outerRadius={85}
+                        dataKey="value"
+                        paddingAngle={0}
+                        stroke="none"
+                      >
+                        {pieData.map((_, i) => (
+                          <Cell key={i} fill={PASTEL_COLORS[i % PASTEL_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={formatTooltipValue}
+                        contentStyle={{
+                          borderRadius: "8px",
+                          border: "none",
+                          boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+
+                  {/* Golden Standard 3-Column Legend */}
+                  <div style={{ marginTop: "24px", padding: "0 8px" }}>
+                    <Row gutter={[16, 12]}>
+                      {pieData.map((item, idx) => (
+                        <Col span={8} key={idx}>
+                          <Flex vertical gap={2}>
+                            <Flex align="center" gap={6}>
+                              {/* Disc indicator */}
+                              <div
+                                style={{
+                                  width: "8px",
+                                  height: "8px",
+                                  borderRadius: "50%",
+                                  backgroundColor: PASTEL_COLORS[idx % PASTEL_COLORS.length],
+                                  flexShrink: 0,
+                                }}
+                              />
+                              <Text
+                                ellipsis={{ tooltip: capitalize(item.name) }}
+                                style={{ fontSize: "12px", color: "#555", fontWeight: 500 }}
+                              >
+                                {capitalize(item.name)}
+                              </Text>
+                            </Flex>
+                            {/* Indented value under label */}
+                            <Text style={{ fontSize: "11px", color: "#888", paddingLeft: "14px" }}>
+                              ₹{item.value.toLocaleString("en-IN")}
+                            </Text>
+                          </Flex>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                </Flex>
               );
             }}
           />
@@ -184,50 +359,6 @@ const AnalyticsPage = () => {
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
-              );
-            }}
-          />
-        </Col>
-
-        {/* 5. Income Sources - Pie Chart */}
-        <Col xs={24} lg={12} xl={12}>
-          <DynamicAnalyticsContainer
-            title="Income Sources"
-            infoText="Breakdown of your revenue streams."
-            data={data}
-            renderChart={(filtered) => {
-              const income = filtered.filter((t) => t.type === "receipt");
-              const grouped = income.reduce((acc: any, t) => {
-                acc[t.category || "Other"] = (acc[t.category || "Other"] || 0) + t.amount;
-                return acc;
-              }, {});
-              const pieData = Object.entries(grouped).map(([name, value]) => ({ name, value }));
-              return (
-                <>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        innerRadius={60}
-                        outerRadius={80}
-                        dataKey="value"
-                        paddingAngle={0}
-                        stroke="none"
-                      >
-                        {pieData.map((_, i) => (
-                          <Cell key={i} fill={SOURCE_COLORS[i % SOURCE_COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <ChartLegend
-                    items={pieData.map((d, i) => ({
-                      label: d.name as string,
-                      color: SOURCE_COLORS[i % SOURCE_COLORS.length],
-                    }))}
-                  />
-                </>
               );
             }}
           />
