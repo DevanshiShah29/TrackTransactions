@@ -106,46 +106,6 @@
   }
 }
 
-.chartWrapper {
-  background: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  height: 100%;
-}
-
-.chartHeader {
-  margin-bottom: 16px;
-}
-
-.titleSection {
-  display: flex;
-  align-items: center;
-  gap: 8;
-}
-.infoIcon {
-  color: #bfbfbf;
-  cursor: help;
-}
-
-.rangeContainer {
-  margin-bottom: 20px;
-  padding: 4px 12px;
-  background: #fafafa;
-  border-radius: 6px;
-}
-
-.rangeDisplay {
-  font-weight: 600;
-  color: #555;
-  font-size: 13px;
-}
-
-.chartContent {
-  height: 300px;
-  width: 100%;
-}
-
 /* Legend Styles */
 .legendGrid {
   margin-top: 24px;
