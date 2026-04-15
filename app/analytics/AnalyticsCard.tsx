@@ -62,6 +62,7 @@ const AnalyticsCard: React.FC<Props> = ({ title, infoText, data, children }) => 
               setViewType(v);
               setReferenceDate(dayjs());
             }}
+            className="viewSelect"
             options={[
               { label: "All Time", value: "all_time" },
               { label: "Year", value: "this_year" },
