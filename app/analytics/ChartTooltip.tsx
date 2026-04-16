@@ -1,12 +1,12 @@
 "use client";
+
+// Library imports
 import { Tooltip, TooltipProps } from "recharts";
+
+// Utility imports
 import { commonTooltip } from "@/utils/format";
 
-interface CustomTooltipProps extends TooltipProps<any, any> {
-  // Add any extra props if needed, but Recharts props are handled by TooltipProps
-}
-
-const ChartTooltip = (props: CustomTooltipProps) => {
+const ChartTooltip = (props: TooltipProps) => {
   return (
     <Tooltip
       formatter={commonTooltip}

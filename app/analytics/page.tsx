@@ -1,4 +1,6 @@
 "use client";
+
+// Library imports
 import { Row, Col } from "antd";
 import {
   ResponsiveContainer,
@@ -11,15 +13,21 @@ import {
   Pie,
   Cell,
 } from "recharts";
+
+// Component imports
 import AnalyticsCard from "./AnalyticsCard";
-import { ChartLegend } from "./ChartLegend";
-import useTransactions from "@/hooks/useTransactions";
-import { processDataForBar } from "@/utils/analytics";
-import { capitalize } from "@/utils/format";
+import ChartLegend from "./ChartLegend";
 import ChartTooltip from "./ChartTooltip";
 import ChartYAxis from "./ChartYAxis";
 import ChartXAxis from "./ChartXAxis";
-import { SubscriptionAnalytics } from "./SubscriptionAnalytics";
+import SubscriptionAnalytics from "./SubscriptionAnalytics";
+
+// Hook imports
+import useTransactions from "@/hooks/useTransactions";
+
+// Utility imports
+import { processDataForBar } from "@/utils/analytics";
+import { capitalize } from "@/utils/format";
 
 const COLORS = ["#562dd7", "#2eb479", "#fea02a", "#ff7875", "#36cfc9"];
 

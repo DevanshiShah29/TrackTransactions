@@ -1,23 +1,16 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+
+// Library imports
+import dayjs from "dayjs";
 import { Flex, Typography, Tooltip, Select, Button } from "antd";
 import { InfoCircleOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+
+// Type imports
+import { DynamicChartProps } from "@/types";
 
 const { Title, Text } = Typography;
-
-interface DynamicChartProps {
-  title: string;
-  infoText: string;
-  data: any[];
-  // Change this line to accept 3 arguments
-  renderChart: (
-    filteredData: any[],
-    viewType: string,
-    referenceDate: dayjs.Dayjs,
-  ) => React.ReactNode;
-}
 
 const DynamicAnalyticsContainer: React.FC<DynamicChartProps> = ({
   title,

@@ -1,16 +1,15 @@
 "use client";
+
+// Library imports
 import { Row, Col, Flex, Typography } from "antd";
+
+// Utility imports
 import { capitalize } from "@/utils/format";
+import { LegendItem } from "@/types";
 
 const { Text } = Typography;
 
-interface LegendItem {
-  name: string;
-  value: number;
-  color: string;
-}
-
-export const ChartLegend = ({ items }: { items: LegendItem[] }) => (
+const ChartLegend = ({ items }: { items: LegendItem[] }) => (
   <div className="legendGrid">
     <Row gutter={[16, 12]}>
       {items.map((item, idx) => (
@@ -29,3 +28,5 @@ export const ChartLegend = ({ items }: { items: LegendItem[] }) => (
     </Row>
   </div>
 );
+
+export default ChartLegend;

@@ -1,5 +1,9 @@
 "use client";
+
+// Library imports
 import { YAxis, YAxisProps } from "recharts";
+
+// Utility imports
 import { formatYAxis } from "@/utils/analytics";
 
 const ChartYAxis = (props: YAxisProps) => {

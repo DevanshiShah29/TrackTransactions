@@ -1,21 +1,17 @@
 "use client";
 import React, { useState, useMemo } from "react";
+
+// Library imports
 import { Flex, Typography, Tooltip, Select, Button } from "antd";
 import { InfoCircleOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
+// Type imports
+import { AnalyticsCardProps } from "@/types";
+
 const { Title, Text } = Typography;
 
-// Common Tooltip Formatter
-
-interface Props {
-  title: string;
-  infoText: string;
-  data: any[];
-  children: (filtered: any[], view: string, date: dayjs.Dayjs) => React.ReactNode;
-}
-
-const AnalyticsCard: React.FC<Props> = ({ title, infoText, data, children }) => {
+const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ title, infoText, data, children }) => {
   const [viewType, setViewType] = useState("this_year");
   const [referenceDate, setReferenceDate] = useState(dayjs());
 

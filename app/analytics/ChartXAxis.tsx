@@ -1,4 +1,6 @@
 "use client";
+
+// Library imports
 import { XAxis, XAxisProps } from "recharts";
 
 const ChartXAxis = (props: XAxisProps) => {

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 export interface Transaction {
   id: string;
   description?: string;
@@ -59,4 +60,28 @@ export interface SearchBarProps {
   onOpenAdd: () => void;
   onSearch?: (query: string) => void;
   defaultValue?: string;
+}
+
+export interface AnalyticsCardProps {
+  title: string;
+  infoText: string;
+  data: any[];
+  children: (filtered: any[], view: string, date: dayjs.Dayjs) => React.ReactNode;
+}
+
+export interface LegendItem {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export interface DynamicChartProps {
+  title: string;
+  infoText: string;
+  data: any[];
+  renderChart: (
+    filteredData: any[],
+    viewType: string,
+    referenceDate: dayjs.Dayjs,
+  ) => React.ReactNode;
 }
