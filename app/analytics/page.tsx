@@ -19,6 +19,7 @@ import { capitalize } from "@/utils/format";
 import ChartTooltip from "./ChartTooltip";
 import ChartYAxis from "./ChartYAxis";
 import ChartXAxis from "./ChartXAxis";
+import { SubscriptionAnalytics } from "./SubscriptionAnalytics";
 
 const COLORS = ["#562dd7", "#2eb479", "#fea02a", "#ff7875", "#36cfc9"];
 
@@ -187,6 +188,16 @@ const AnalyticsPage = () => {
                 </ResponsiveContainer>
               );
             }}
+          </AnalyticsCard>
+        </Col>
+
+        <Col xs={24} xl={12}>
+          <AnalyticsCard
+            title="Active Subscriptions"
+            infoText="Monthly recurring costs"
+            data={data}
+          >
+            {(filtered) => <SubscriptionAnalytics data={filtered} />}
           </AnalyticsCard>
         </Col>
       </Row>

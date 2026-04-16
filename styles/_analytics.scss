@@ -130,3 +130,48 @@
   color: #888;
   padding-left: 14px;
 }
+
+// ACTIVE SUBSCRIPTION
+.subAnalyticsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subItemCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.subItemIcon {
+  width: 44px !important;
+  height: 44px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  font-size: 20px;
+}
+
+.subItemTitle {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #111;
+  margin: 0 !important;
+}
+
+.subItemDate {
+  font-size: 12px;
+  color: #909090 !important;
+  margin-top: 2px;
+}
+
+.subItemAmount {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #000;
+  letter-spacing: -0.2px;
+}

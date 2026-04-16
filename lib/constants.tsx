@@ -1,3 +1,4 @@
+import { CategoryAvatarProps } from "@/types";
 import {
   CoffeeOutlined,
   ShoppingOutlined,
@@ -8,9 +9,14 @@ import {
   BankOutlined,
   DollarOutlined,
   WalletOutlined,
+  GiftOutlined,
+  ShoppingCartOutlined,
+  PlayCircleOutlined,
+  MedicineBoxOutlined,
+  BookOutlined,
+  CarOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
-
-import { CategoryAvatarProps } from "@/types";
 
 export const categoryMap: Record<string, CategoryAvatarProps> = {
   food: { icon: <CoffeeOutlined />, color: "#ff9c6e" },
@@ -22,6 +28,13 @@ export const categoryMap: Record<string, CategoryAvatarProps> = {
   salary: { icon: <BankOutlined />, color: "#b37feb" },
   profit: { icon: <DollarOutlined />, color: "#73d13d" },
   cash: { icon: <WalletOutlined />, color: "#87e8de" },
+  gift: { icon: <GiftOutlined />, color: "#ffadd2" },
+  groceries: { icon: <ShoppingCartOutlined />, color: "#ffc069" },
+  entertainment: { icon: <PlayCircleOutlined />, color: "#b37feb" },
+  health: { icon: <MedicineBoxOutlined />, color: "#ff7875" },
+  education: { icon: <BookOutlined />, color: "#69c0ff" },
+  transport: { icon: <CarOutlined />, color: "#95de64" },
+  other: { icon: <QuestionCircleOutlined />, color: "#bfbfbf" },
 };
 
 export const categories = [
