@@ -141,7 +141,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             Showing {range[0]}-{range[1]} of {total} records
           </span>
         ),
-        position: ["bottomRight"],
+        placement: ["bottomEnd"],
       }}
       className="premium-table"
       aria-label="Recent transactions table"

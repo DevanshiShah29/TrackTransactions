@@ -34,14 +34,14 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
   const monthlyBalance = totals.income - totals.expense;
 
   return (
-    <Card bordered={false} className="premium-balance-card">
+    <Card variant="borderless" className="premium-balance-card">
       <div className="card-glass-overlay" />
       <div className="card-glow" />
 
       <Flex vertical justify="space-between" className="card-content">
         {/* Top Section */}
         <Flex justify="space-between" align="start">
-          <Space direction="vertical" size={0}>
+          <Space orientation="vertical" size={0}>
             <Text className="label-text">{dayjs().format("MMMM")} BALANCE</Text>
             <Title level={1} className="balance-amount">
               ₹{monthlyBalance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
@@ -64,7 +64,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
 
         {/* Bottom Section */}
         <Flex justify="space-between" align="end">
-          <Space direction="vertical" size={0}>
+          <Space orientation="vertical" size={0}>
             <Text className="label-text">CARD HOLDER</Text>
             <Text className="holder-name">FINANCIAL LEDGER</Text>
           </Space>
@@ -79,7 +79,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions }) => {
               <Text className="stat-value income">+₹{totals.income.toLocaleString("en-IN")}</Text>
             </div>
             <Divider
-              type="vertical"
+              orientation="vertical"
               style={{ height: "30px", borderColor: "rgba(255,255,255,0.2)" }}
             />
             <div
